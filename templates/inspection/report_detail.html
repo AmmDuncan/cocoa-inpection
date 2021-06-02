@@ -1,0 +1,134 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <main class="main">
+    <div class="home sc-only">
+        <a href="{% url 'list_report' %}" class="btn btn-primary">&LeftArrow; List</a>
+        <a href="{% url 'home' %}" class="btn btn-outline-primary">Home</a>
+        <a href="{% url 'logout' %}" class="text-bold btn btn-danger logout" style="margin-left: auto;">Log out</a>
+    </div>
+
+    <header>
+        <img src="{% static 'img/logo.png' %}" alt="">
+        <div class="text">
+            <span class='heading'>Ghana Cocoa Board</span>
+            <h3>File No.</h3>
+        </div>
+    </header>
+    <div class="l-box"></div>
+    <div class="line"></div>
+    <div class="report">
+        <div class="date">{{report.date|date:'jS F, Y'}}</div>
+        <div class="address">The Director, Human Resource</div>
+        <div class="topic">
+            Inspection Report <br>
+            Payment of Motor/Vehicle Maintenance/Fuel Allowance
+        </div>
+        <div class="body">
+            We have inspected the {{report.get_item_inspected_display|capfirst}} and the relevant documents of <strong>{{ report.name|upper }}</strong> and {% if managers_preference %}{{ managers_preference }}{% if ends_with_full_stop %}{% else %}.{% endif %}{% else %}submit a report for your attention.{% endif %}
+            <br>
+            The details of the {{report.get_item_inspected_display|capfirst}} and the relevant documents are as follows;
+            <ol class="mt-1">
+                <li><span class="label">MAKE</span><span class="value"> &dash;&dash;&dash;&dash; <span class="inline-space"></span>{{ report.make|upper }}</span></li>
+                <li><span class="label">REGISTRATION</span><span class="value"> &dash;&dash;&dash;&dash; <span class="inline-space"></span>{{ report.registration }}</span></li>
+                <li><span class="label">CHASIS NO.</span><span class="value"> &dash;&dash;&dash;&dash; <span class="inline-space"></span>{{ report.chasis_number }}</span></li>
+                <li><span class="label">INSURANCE POLICY NO.</span><span class="value"> &dash;&dash;&dash;&dash; <span class="inline-space"></span>{{ report.insurance_policy_number }}</span></li>
+                <ol>
+                    <li><span class="label">Commencement Date:</span><span class="value">&dash;&dash;&dash;&dash; <span class="inline-space"></span>{{report.insurance_starting_date|date:'d/m/Y'}}</span></li>
+                    <li><span class="label">Expiry Date:</span><span class="value">&dash;&dash;&dash;&dash; <span class="inline-space"></span>{{report.insurance_expiry_date|date:'d/m/Y'}}</span></li>
+                </ol>
+                <li><span class="label">CUBIC CAPACITY</span class="value"> &dash;&dash;&dash;&dash; <span class="inline-space"></span>{{ report.cubic_capacity }}</span></li>
+                <li>ROAD WORTHINESS CERTIFICATE</li>
+                <ol>
+                    <li><span class="label">Commencement Date:</span><span class="value">&dash;&dash;&dash;&dash; <span class="inline-space"></span>{{report.road_worthiness_starting_date|date:'d/m/Y'}}</span></li>
+                    <li><span class="label">Expiry Date:</span><span class="value">&dash;&dash;&dash;&dash; <span class="inline-space"></span>{{report.road_worthiness_expiry_date|date:'d/m/Y'}}</span></li>
+                </ol>
+                <li><span class="label">DRIVING LICENCE NO.</span><span class="value"> &dash;&dash;&dash;&dash; <span class="inline-space"></span>{{ report.driving_license_number }}</span></li>
+                <ol>
+                    <li><span class="label">Commencement Date:</span><span class="value">&dash;&dash;&dash;&dash; <span class="inline-space"></span>{{report.driving_license_starting_date|date:'d/m/Y'}}</span></li>
+                    <li><span class="label">Expiry Date:</span><span class="value">&dash;&dash;&dash;&dash; <span class="inline-space"></span>{{report.driving_license_expiry_date|date:'d/m/Y'}}</span></li>
+                </ol>   
+                <li><span class="label">DEED OF ASSIGNMENT</span><span class="value"> &dash;&dash;&dash;&dash; <span class="inline-space"></span>{{ report.get_deed_status_display|upper }}</span></li>
+            </ol>
+            <div class="recommendation">
+            {% if report.currently_receiving %}
+                We recommend that <strong>{{report.name|upper}}</strong>continue to draw <strong>{{report.get_loan_for_display|capfirst}} Maintenance and Fuel Allowance</strong>.
+            {% else %}
+                We recommend that <strong>{{report.name|upper}}</strong> be paid <strong>{{report.get_loan_for_display|capfirst}} Maintenance and Fuel Allowance</strong>, effective 1st {{ effective_date|date:'F, Y'}}.
+            {% endif %}
+            </div>
+            <div class="signature">
+                <strong>{{report.manager|upper}}</strong><br>
+                <strong>AUDIT MANAGER</strong>
+            </div>
+        </div>
+    </div>
+    
+    </main>
+{% endblock %}
+
+{% block style %}
+
+   <style>
+       body {
+           font-family: 'Times New Roman', serif;
+           font-size: 1.05rem;
+           background: #fff;
+       }
+
+       .home {
+           margin-left: -10\rem;
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           position: absolute;
+           top: 2rem;
+           left: -1rem;
+       }
+
+        @media print{
+            .sc-only {
+                display: none;
+            }
+        }
+
+
+       .main {
+            margin-top: 1rem;
+            max-width: 800px;
+            /* border: 1px solid black; */
+       }
+
+       header {
+           align-items: stretch;
+           margin: 0 1rem;
+           padding-bottom: .25rem;
+           margin-left: -1rem;
+           padding-top: .2rem;
+       }
+
+       header img {
+           width: 7.5rem;
+       } 
+       
+       header .heading {
+           font-size: 1.5rem;
+           line-height: 1.3;
+           text-transform: uppercase;
+           text-decoration: underline;
+       }
+
+       header .text {
+           display: flex;
+           justify-content: flex-end;
+           flex-flow: column;
+           padding-bottom: .5rem;
+       }
+
+       header h3 {
+           text-transform: uppercase;
+           font-weight: 700;
+           font-size: 1.5rem;
+       }
+   </style>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %} Cocobod: Create Inspection Report {% endblock %}
+
+{% block content %}
+
+<div class="base-body">
+    <div class="space"></div>
+    <nav class="nav">
+        <div class="nav-btn">
+            <div class="open-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+            </div>
+            <div class="close-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </div>
+        </div>
+        <div class="nav-brand">
+            <div class="pic"><img src="{% static 'img/logo.PNG' %}" alt="" /></div>
+            <div class="text">
+                Ghana Cocoa Board
+                <div class="smaller">Audit Department</div>
+            </div>
+        </div>
+        <ul>
+            <li class="">
+                <a href="{% url 'home' %}">
+                    <span class="icon"><i class="bi bi-house"></i></span>
+                    Home
+                </a>
+            </li>            
+            
+            <li class="active">
+                <a href="{% url 'list_report' %}">
+                    <span class="icon"><i class="bi bi-archive"></i></span>
+                    Reports
+                </a>
+            </li>
+            
+            <li>
+                <a href="{% url 'logout' %}"  class="text-danger">
+                    <span class="icon"><i class="bi bi-box-arrow-right"></i></span>
+                    Logout
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+
+    <main>  
+
+        <form action="" class="report-form" method="POST">
+            {% csrf_token %}
+            {% crispy form %}
+
+            <div class="create-report">
+                <button onClick="submit" href="{% url 'create_report' %}" class="card text-decoration-none shadow text-primary">
+                    <div class="card-body ">
+                    <i class="bi bi-save" style="font-size: 1.25rem; margin-right: .5rem; color: #0d6efd"></i></i> Save
+                    </div>
+                </button>
+            </div>
+        </form>
+    </main>
+
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        let form = document.querySelector("form");
+
+        function submit() {
+            form.submit();
+        }
+    
+    </script>
+
+{% endblock %}
